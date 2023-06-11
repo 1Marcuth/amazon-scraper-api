@@ -28,15 +28,18 @@ def parse_url(url: str) -> dict:
     elif not url.startswith("https://"):
         url = f"https://{url}"
 
-    if not url.startswith("https://www"):
-        url = url.replace("https://www")
+    if not url.startswith("https://www."):
+        url = url.replace("https://", "https://www.")
+
+    if url.endswith("/"):
+        url = url.removesuffix("/")
 
     if url.startswith("https://www.amazon.com.br/dp/"):
-        match = re.match(r"https://www.amazon.com.br/dp/(.*?)/", url)
+        match = re.match(r"https://www.amazon.com.br/dp/([^/]+)/?", url)
         id = match.group(1)
 
     else:
-        match = re.match(r"https://www.amazon.com.br/(.*?)/dp/(.*?)/", url)
+        match = re.match(r"https://www.amazon.com.br/(.*?)/dp/([^/]+)/?", url)
         name = match.group(1)
         id = match.group(2)
 
